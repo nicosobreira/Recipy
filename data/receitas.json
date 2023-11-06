@@ -1,0 +1,12 @@
+{
+    "Bolo de Chocolate": {
+        "Categoria": ["Bolo", "Doce"],
+        "Ingredientes": ["1 ovo", "2 xícaras de farinha", "1 colher de sopa de fermento"],
+        "Passo a Passo": "bla bla"
+    },
+    "Arroz": {
+        "Categoria": ["Salgado"],
+        "Ingredientes": ["1 xícara de arroz", "óleo"],
+        "Passo a Passo": "blo blo"
+    }
+}
