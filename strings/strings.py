@@ -1,9 +1,12 @@
-from strings.constraints import *
+from .constants import *
 
 
-def errorMessage(message):
-    message = message.split()
-    boxList(message, 35, 3)
+def errorMessage(message=''):
+    length = len(message) + 4
+
+    line('>', length)
+    print(colors(message.center(length), 'Red', style='Bold'))
+    line('<', length)
 
 
 def line(type='-', length=30):
@@ -33,8 +36,7 @@ def colors(text, color='None', background='None', style='None'):
 def randomColor(text):
     from random import choice
 
-    color = choice(COLORS_LIST)
-    return colors(text, color)
+    return colors(text, choice(COLORS_LIST), style='Bold')
 
 
 def rainbow(text):
@@ -78,28 +80,3 @@ def boxList(lista, length, type=0):
         print()
     customLine()
 
-
-def clearTerminal():
-    from os import system, name
-
-    if name == 'posix':  # For Unix/Linux/Mac
-        system('clear')
-    elif name == 'nt':  # For Windows
-        system('cls')
-    else:
-        pass
-
-
-def exitProgram():
-    from sys import exit
-
-    MENSAGEM = [
-        '       ',
-        '|     |',
-        '|     |',
-        '=_____=',
-        '       '
-    ]
-    clearTerminal()
-    boxList(MENSAGEM, 13, 2)
-    exit()
