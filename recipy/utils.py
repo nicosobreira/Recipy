@@ -1,5 +1,24 @@
 from terminal import *
-from strings.strings import errorMessage
+from strings.strings import *
+
+
+def askOptions(options={}, colors_list=[]):
+    while True:
+        lineDark('>', 30)
+        color_index = 0
+        for key, value in options.items():
+            print(colors("| ", colors_list[color_index], style='Dark'), end='')
+            print(f'{colors(key, colors_list[color_index], style="Bold")} ~ {value}'.center(39), end='')
+            print(colors(" |", colors_list[color_index], style='Dark'), end='')
+            print()
+            color_index += 1
+        lineDark('<', 30)
+        resposta = askUserInfo(
+            ('Qual é sua escolha? ')).upper()
+        if resposta in options.keys():
+            return resposta
+        else:
+            errorMessage('Digite um valor válido')
 
 
 def askUserInfo(pergunta='', tipo='str'):

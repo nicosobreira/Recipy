@@ -7,22 +7,35 @@ install()
 
 
 def main():
-    with open(utils.pastaAtual() + '/data/receitas.json') as file_receita:
-        RECEITAS = json.load(file_receita)
-        constants.NOMES = [nome for nome in RECEITAS.keys()]
     while True:
-        resposta = menu()
+        with open('data/teste.json') as file_receita:
+            try:
+                receitas = json.load(file_receita)
+            except:
+                receitas = {}
+            else:
+                constants.NOMES = [nome for nome in receitas.keys()]
+        clearTerminal()
+        resposta = utils.askOptions(constants.MENU, constants.MENU_COLORS)
         clearTerminal()
         match resposta:
-            case 'S' | '0':
+            case 'S' | '4':
                 exitProgram()
+            case 'M' | '0':
+                pass
             case 'N' | '1':
-                nova_receita = recipes.novaReceita()
+                receita_usr = recipes.novaReceita()
+                receitas.update(receita_usr)
+                with open('data/teste.json', 'w', encoding='utf-8') as file_receita:
+                    json.dump(receitas, file_receita, indent=4)
             case 'E' | '2':
-                receita = recipes.escolheReceita()
-                receita_editada = recipes.editaReceita(receita)
-                if receita_editada != None:
-                    pass
+                nome_antigo = editor.escolheReceita()
+                receita_usr = recipes.editaReceita(receitas[nome_antigo])
+                receitas.pop(nome_antigo); receitas.update(receita_usr)
+                with open('data/teste.json', 'w', encoding='utf-8') as file_receita:
+                    json.dump(receitas, file_receita, indent=4, ensure_ascii=True)
+            case 'X' | '3':
+                pass
 
 
 if __name__ == "__main__":

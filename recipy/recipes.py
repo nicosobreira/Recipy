@@ -1,110 +1,93 @@
 from strings.strings import *
-from .utils import askUserInfo, pastaAtual
+from .utils import askUserInfo
 from terminal import clearTerminal
 from .constants import *
+from .editor import *
 import json
 
 
-# Receita:
-#   Nome - Verde
-#   Categorias - Roxo
-#   Ingredientes - Blue
-#   Passos - None
-
-
-def escolheReceita():
-    while True:
-        nome = askUserInfo(
-            f'Qual é o {colors("nome", style="Blink")} da {"receita à ser editada"}? ')
-        if nome in NOMES:
-            return NOMES[nome]
-        errorMessage('Digite um nome válido')
-
-
 def novaReceita():
-    line('-', 30)
-    nome = askUserInfo(
-        f'Qual é o {colors("nome", style="Blink")} da {rainbow("nova receita")}? ')
-    line('-', 30)
-    categorias = perguntaAté('Quais são as categorias? ')
-    line('~', 30)
-    ingredientes = perguntaAté('Quais são os ingredientes? ')
+    while True:
+        lineDark('<', 40)
+        print(
+            f'Qual é o {colors("nome", "Yellow")} da nova receita? '.center(55))
+        lineDark('>', 40)
+        nome = askUserInfo('>> ')
+        if nome not in NOMES:
+            break
+        errorMessage('Nome repetido! Digite outro')
+        clearTerminal()
+
+    categorias = editaAté('Quais são as categorias? ', [])
+    ingredientes = editaAté('Quais são os ingredientes? ', [])
     passos = editorTexto()
 
-    receita = f"""
-        {nome}: {{
-        'Categorias': {categorias},
-        'Ingredientes': {ingredientes},
-        'Passos': {passos}
-        }}
-        """
-    return receita
+    receita = {nome: {
+    'Nome': nome,
+    'Categorias': categorias,
+    'Ingredientes': ingredientes,
+    'Passos': passos
+    }}
+    str_receita = json.dumps(receita)
+    print(receita)
+    continuação = continuarReceita()
+    if continuação:
+        return receita
+    return None
 
 
-def editaReceita(receita=dict()):
-    def opção():
+def editaReceita(receita={}):
+    def editar():
+        clearTerminal()
         while True:
-            line('>', 30)
-            print('Oque deseja editar')
+            lineDark('>', 30)
+            print(colors(nome, style='Bold').center(40))
+            lineDark('<', 30)
+            print(f'Oque deseja editar')
+            print(f'{colors("CTRL", "Blue")} + {colors("C", "Blue")} para sair')
+            line('-', 30)
             for key, item in EDITOR.items():
-                print(f'{key} - {item}')
-            opção = askUserInfo('>> ').upper()
+                print(f'{colors(key, "Blue")}. {item}')
+            try:
+                opção = input('>> ').strip().upper()
+            except KeyboardInterrupt:
+                return None
             if opção in EDITOR.keys():
                 return opção
             errorMessage('Digite uma opção válida')
+
+    nome = receita['Nome']
+    categorias = receita['Categorias']
+    ingredientes = receita['Ingredientes']
+    passos = receita['Passos']
     while True:
-        opção = opção()
+        opção = editar()
+        match opção:
+            case None:
+                break
+            case 'N':
+                line('~', 30)
+                nome = askUserInfo(f'Qual é o novo {colors("nome", "Blue")} para "{nome}"? ')
+            case 'C':
+                categorias = editaAté('Categorias', categorias)
+            case 'I':
+                ingredientes = editaAté('Ingredientes', ingredientes)
+            case 'P':
+                passos = editorTexto(passos)
+    receita = {nome: {
+    'Nome': nome,
+    'Categorias': categorias,
+    'Ingredientes': ingredientes,
+    'Passos': passos
+    }
+    }
+    str_receita = json.dumps(receita)
+    print(receita)
+    continuação = continuarReceita()
+    if continuação:
+        return receita
+    return None
 
 
-def mostraReceita(nome_receita, eixo_x=30, eixo_y=30):
+def mostraReceita(receita={}):
     pass
-
-
-def editorTexto(texto_anterior=['']):
-    clearTerminal()
-    line('-', 30)
-    print(
-        f'{colors(">>", "Purple")} {"Digite CTRL + C para parar":^30} {colors("<<", "Purple")}')
-    
-    if texto_anterior[0] == '':
-        texto = []
-        index = -1
-    else:
-        texto = texto_anterior
-        for index, linha in enumerate(texto_anterior):
-            print(f'{colors(str(index) + ".", style="Dark")} {linha}')
-
-    while True:
-        index += 1
-        print(colors(str(index) + ".", style="Dark"), end=' ')
-        try:
-            linha = str(input(''))
-            texto.append(linha)
-        except KeyboardInterrupt:
-            print()
-            ic(texto)
-            return texto
-
-
-def perguntaAté(pergunta=''):
-    respostas = []
-
-    index = 0
-    print('Digite CTRL + C para parar'.center(30))
-    print(f'{colors(">>", "Blue")} {pergunta} {colors("<<", "Blue")}'.center(30))
-    while True:
-        print(colors(str(index) + ".", style="Dark"), end=' ')
-
-        try:
-            resposta = str(input('')).strip()
-        except KeyboardInterrupt:
-            print()
-            if len(respostas) != 0:
-                for resp in respostas:
-                    if resp == '':
-                        respostas.pop(respostas.index(resp))
-                return respostas
-            errorMessage('Coloque pelo menos 1 valor')
-        else:
-            respostas.append(resposta)
-        index += 1

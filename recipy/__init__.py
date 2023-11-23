@@ -1,1 +1,1 @@
-__all__ = ["menu", "recipes", "constants", "utils"]
+__all__ = ["recipes", "constants", "utils", "editor"]

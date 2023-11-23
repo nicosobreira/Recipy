@@ -1,10 +1,18 @@
 NOMES = []
 
+
+MENU_COLORS = ('Green', 'Yellow', 'Blue', 'Red', 'Red')
+
 MENU = {
+    'M': 'Mostrar receita',
     'N': 'Nova receita',
     'E': 'Editar receita',
-    'S': 'Sair do Recipy',
+    'X': 'Excluir receita',
+    'S': 'Sair do Recipy'
 }
+
+
+EDITOR_CORES = ('Green', 'Blue', 'Red', 'Purple')
 
 EDITOR = {
     'N': 'Nome',

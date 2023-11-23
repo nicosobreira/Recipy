@@ -13,6 +13,10 @@ def line(type='-', length=30):
     print(type * length)
 
 
+def lineDark(type='-', length=30):
+    print(colors(type, style='Dark') * length)
+
+
 def showText(text, type='-', length=30):
     print(type * length)
     print(text.center(length))
@@ -23,7 +27,7 @@ def colors(text, color='None', background='None', style='None'):
     '''Generate a text with colors
 
     Color and Background [options]:
-        Black, Red, Green, Orange, Yellow, Blue, Cyan, Gray, None
+        Black, Red, Green, Orange, Yellow, Blue, Purple, Cyan, Gray, None
 
     Style [options]:
         None, Bold, Dark, Italic, Underline, Blink, Negative, Risk
@@ -45,7 +49,7 @@ def rainbow(text):
 
     for character in text:
         if character == ' ':
-            format_text += ' '
+            format_text += character
         else:
             format_text += colors(character, RAINBOW[count])
             if count == len(RAINBOW) - 1:

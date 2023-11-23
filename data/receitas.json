@@ -1,10 +1,12 @@
 {
     "Bolo de Chocolate": {
+        "Nome": "Bolo de Chocolate",
         "Categorias": ["Bolo", "Doce"],
         "Ingredientes": ["1 ovo", "2 xícaras de farinha"],
         "Passos": ["C"]
     },
     "Arroz": {
+        "Nome": "Arroz",
         "Categorias": ["Salgado"],
         "Ingredientes": ["Arroz"],
         "Passos": ["Aas"]
